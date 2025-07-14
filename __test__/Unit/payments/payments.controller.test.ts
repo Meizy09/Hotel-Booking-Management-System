@@ -17,7 +17,7 @@ describe("Payment Controller", () => {
     jest.clearAllMocks();
   });
 
-  // getAllPayments
+  
   test("getAllPayments should return payments", async () => {
     const res = mockResponse();
     const payments = [{ Payment_id: 1 }, { Payment_id: 2 }];
@@ -29,7 +29,7 @@ describe("Payment Controller", () => {
     expect(res.json).toHaveBeenCalledWith(payments);
   });
 
-  // getPaymentById - success
+  
   test("getPaymentById should return a payment", async () => {
     const res = mockResponse();
     const req = { params: { id: "1" } } as unknown as Request;
@@ -42,7 +42,7 @@ describe("Payment Controller", () => {
     expect(res.json).toHaveBeenCalledWith(payment);
   });
 
-  // getPaymentById - not found
+ 
   test("getPaymentById should return 404 if not found", async () => {
     const res = mockResponse();
     const req = { params: { id: "1" } } as unknown as Request;
@@ -54,21 +54,37 @@ describe("Payment Controller", () => {
     expect(res.json).toHaveBeenCalledWith({ message: "Payment not found" });
   });
 
-  // createPayment
-  test("createPayment should return 201 with new payment", async () => {
-    const res = mockResponse();
-    const req = { body: { amount: 1000 } } as Request;
-    const newPayment = { Payment_id: 1, amount: 1000 };
-    (paymentService.createPayment as jest.Mock).mockResolvedValue(newPayment);
+  
+  it("should return 201 with new payment", async () => {
+  const req = {
+    body: {
+      Booking_id: 1,
+      user_id: 1,
+      Amount: 1000,
+      Payment_status: "paid",
+      Payment_date: "2025-07-14",
+      Payment_method: "mpesa",
+      Transaction_id: "ABC123"
+    }
+  } as any;
 
-    await paymentController.createPayment(req, res);
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  } as any;
 
-    expect(paymentService.createPayment).toHaveBeenCalledWith(req.body);
-    expect(res.status).toHaveBeenCalledWith(201);
-    expect(res.json).toHaveBeenCalledWith(newPayment);
-  });
+  const newPayment = { payment_id: 1, ...req.body };
 
-  // updatePayment
+  (paymentService.createPayment as jest.Mock).mockResolvedValue(newPayment);
+
+  await paymentController.createPayment(req, res);
+
+  expect(paymentService.createPayment).toHaveBeenCalledWith(req.body);
+  expect(res.status).toHaveBeenCalledWith(201);
+  expect(res.json).toHaveBeenCalledWith(newPayment);
+});
+
+ 
   test("updatePayment should return updated payment", async () => {
     const res = mockResponse();
     const req = {
@@ -84,7 +100,7 @@ describe("Payment Controller", () => {
     expect(res.json).toHaveBeenCalledWith(updatedPayment);
   });
 
-  // deletePayment
+  
   test("deletePayment should return 204", async () => {
     const res = mockResponse();
     const req = { params: { id: "1" } } as unknown as Request;

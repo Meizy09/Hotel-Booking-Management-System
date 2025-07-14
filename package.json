@@ -17,6 +17,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.11.0",
   "devDependencies": {
+    "@jest/globals": "^30.0.4",
     "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
@@ -38,6 +39,7 @@
     "drizzle-orm": "^0.44.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "k6": "^0.0.0",
     "nodemailer": "^7.0.5",
     "pg": "^8.16.3"
   }

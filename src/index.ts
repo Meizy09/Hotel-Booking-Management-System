@@ -7,7 +7,7 @@ import userRoutes from "./Users/users.router";
 import authRoutes from "./Auth/auth.router";
 import ticketRoutes from "./Customer_support_tickets/customer_support_tickets.router"
 
-const app = express();
+export const app = express();
 app.use(express.json());
 
 app.use("/api/hotels", hotelRoutes);

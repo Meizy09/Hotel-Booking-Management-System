@@ -12,6 +12,15 @@ import { sendEmail } from "../mailer/mailer";
 export const createUserController = async (req: Request, res: Response) => {
   try {
     const user = req.body;
+
+    // 1. Check if user already exists
+    const existingUser = await getUserByEmailService(user.Email);
+    if (existingUser) {
+      res.status(409).json({ error: "Email already in use" }); // 409 = Conflict
+      return;
+    }
+
+    // 2. Hash password and generate code
     const hashedPassword = bcrypt.hashSync(user.Password, 10);
     user.Password = hashedPassword;
 
@@ -19,9 +28,14 @@ export const createUserController = async (req: Request, res: Response) => {
     user.verificationCode = verificationCode;
     user.isVerified = false;
 
+    // 3. Create user
     const result = await createUserService(user);
-    if (!result)  res.status(400).json({ message: "User not created" });
+    if (!result) {
+       res.status(400).json({ message: "User not created" });
+       return;
+    }
 
+    // 4. Send verification email
     try {
       await sendEmail(
         user.Email,
@@ -33,14 +47,24 @@ export const createUserController = async (req: Request, res: Response) => {
       console.error("Email sending failed:", err);
     }
 
+    // 5. Success response
      res.status(201).json({ message: "User created. Verification code sent to email." });
+     return;
+
   } catch (err: any) {
      res.status(500).json({ error: err.message });
+     return;
   }
 };
 
+
 export const verifyUserController = async (req: Request, res: Response) => {
   const { email, code } = req.body;
+  if (!email || !code) {
+  res.status(400).json({ error: "Email and code are required" });
+  return;
+}
+
 
   try {
     const user = await getUserByEmailService(email);
@@ -61,18 +85,32 @@ export const verifyUserController = async (req: Request, res: Response) => {
   } catch (err: any) {
      res.status(500).json({ error: err.message });
   }
+  return;
 };
 
 export const loginUserController = async (req: Request, res: Response) => {
   try {
     const { email, Password } = req.body;
+    if (!email || !Password) {
+      res.status(400).json({ error: "Email and password are required" });
+      return;
+    }
     const user = await userLoginService(email);
-    if (!user) res.status(404).json({ message: "User not found" });
-
-    if (!user.isVerified) res.status(403).json({ message: "Account not verified" });
+    if (!user){
+    res.status(404).json({ message: "User not found" });
+    return;
+    }
+  
+    if (!user.isVerified){
+       res.status(403).json({ message: "Account not verified" });
+       return;
+    }
 
     const match = bcrypt.compareSync(Password, user.Password);
-    if (!match) res.status(401).json({ message: "Invalid credentials" });
+    if (!match) {
+      res.status(401).json({ message: "Invalid credentials" });
+      return;
+    }
 
     const payload = {
       user_id: user.user_id,
@@ -93,7 +131,9 @@ export const loginUserController = async (req: Request, res: Response) => {
         email: user.Email,
         role: user.Role
       }
+      
     });
+    
   } catch (err: any) {
      res.status(500).json({ error: err.message });
   }

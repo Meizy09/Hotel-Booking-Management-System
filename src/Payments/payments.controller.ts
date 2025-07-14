@@ -25,12 +25,38 @@ export const getPaymentById = async (req: Request, res: Response) => {
 
 export const createPayment = async (req: Request, res: Response) => {
   try {
+    const {
+      Booking_id,
+      user_id,
+      Amount,
+      Payment_status,
+      Payment_date,
+      Payment_method,
+      Transaction_id,
+    } = req.body;
+
+    
+    if (
+      !Booking_id ||
+      !user_id ||
+      !Amount ||
+      !Payment_status ||
+      !Payment_date ||
+      !Payment_method ||
+      typeof Transaction_id !== "string" ||
+      Transaction_id.trim() === ""
+    ) {
+       res.status(400).json({ message: "All fields are required and must be valid" });
+       return;
+    }
+
     const newPayment = await paymentService.createPayment(req.body);
     res.status(201).json(newPayment);
   } catch (error) {
     res.status(500).json({ message: "Error creating payment", error });
   }
 };
+
 
 export const updatePayment = async (req: Request, res: Response) => {
   try {

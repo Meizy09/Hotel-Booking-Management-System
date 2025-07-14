@@ -28,7 +28,9 @@ export const createBooking = async (req: Request, res: Response) => {
     const newBooking = await bookingService.createBooking(req.body);
     res.status(201).json(newBooking);
   } catch (error) {
-    res.status(500).json({ message: "Error creating booking", error });
+    console.error("Error creating booking:", error);
+    const errorMessage = typeof error === "object" && error !== null && "message" in error ? (error as { message: string }).message : String(error);
+    res.status(500).json({ message: "Error creating booking", error: errorMessage });
   }
 };
 

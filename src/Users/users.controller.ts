@@ -25,23 +25,40 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
+    const { First_name, Last_name, Email, Password } = req.body;
+
+    // ✅ Check for required fields
+    if (!First_name || !Last_name || !Email || !Password) {
+      res.status(400).json({ message: "Missing required fields" });
+      return;
+    }
+
+    // Proceed to create user
     const newUser = await userService.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ message: "Error creating user", error });
+    res.status(500).json({ message: "Error creating user" });
   }
 };
 
+
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    req.body.Updated_at = Date.now();
+    req.body.Updated_at = new Date(); // use Date object, not Date.now()
 
     const updatedUser = await userService.updateUser(Number(req.params.id), req.body);
-    res.json(updatedUser);
+
+    if (!updatedUser || updatedUser.length === 0) {
+     res.status(200).json([]);
+     return; // ✅ return empty array as your test expects
+    }
+
+    res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: "Error updating user", error });
   }
 };
+
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {

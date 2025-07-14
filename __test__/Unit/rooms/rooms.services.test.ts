@@ -186,7 +186,7 @@ describe("Negative tests", () => {
 
     mockInsert.mockReturnValueOnce({
       values: jest.fn(() => ({
-        returning: jest.fn().mockResolvedValue([]) // simulate failure
+        returning: jest.fn().mockResolvedValue([]) 
       }))
     });
 
@@ -211,7 +211,7 @@ describe("Negative tests", () => {
     mockUpdate.mockReturnValueOnce({
       set: jest.fn(() => ({
         where: jest.fn(() => ({
-          returning: jest.fn().mockResolvedValue([]) // no match
+          returning: jest.fn().mockResolvedValue([]) 
         }))
       }))
     });
@@ -227,7 +227,7 @@ describe("Negative tests", () => {
     const mockDelete = db.delete as jest.Mock;
 
     mockDelete.mockReturnValueOnce({
-      where: jest.fn().mockResolvedValue(undefined) // not found
+      where: jest.fn().mockResolvedValue(undefined) 
     });
 
     const result = await roomService.deleteRoom(999);

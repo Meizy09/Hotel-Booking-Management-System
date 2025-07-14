@@ -20,7 +20,7 @@ export const users = pgTable("Users", {
   user_id: serial("user_id").primaryKey(),
   First_name: varchar("First_name", { length: 500 }).notNull(),
   Last_name: varchar("Last_name", { length: 500 }).notNull(),
-  Email: varchar("Email", { length: 500 }).notNull(),
+  Email: varchar("Email", { length: 500 }).notNull().unique(),
   Password: varchar("Password", { length: 500 }).notNull(),
   Contact_phone: integer("Contact_phone").notNull(),
   Address: varchar("Address", { length: 500 }).notNull(),

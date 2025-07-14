@@ -2,7 +2,7 @@ import * as userService from "../../../src/Users/users.services";
 import db from "../../../src/Drizzle/db";
 
 jest.mock("../../../src/Drizzle/db", () => {
-  // 👇 Declare the promise INSIDE the mock block
+  
   const mockUserDataPromise = Promise.resolve([
     {
       users: {
@@ -37,7 +37,7 @@ jest.mock("../../../src/Drizzle/db", () => {
   const mockJoinChain: MockJoinChain = {
     innerJoin: jest.fn(() => mockJoinChain),
     where: jest.fn(() => mockJoinChain),
-    then: mockUserDataPromise.then.bind(mockUserDataPromise) // ✅ no ReferenceError now
+    then: mockUserDataPromise.then.bind(mockUserDataPromise) 
   };
 
   const mockFrom = jest.fn(() => mockJoinChain);

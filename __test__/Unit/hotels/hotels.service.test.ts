@@ -31,7 +31,7 @@ const mockHotelWithRoom = {
 jest.mock("../../../src/Drizzle/db", () => {
   const mockReturnValue = {
     from: jest.fn(() => ({
-      leftJoin: jest.fn(() => [mockHotelWithRoom]), // For getAllHotels
+      leftJoin: jest.fn(() => [mockHotelWithRoom]), 
     })),
   };
 
@@ -78,7 +78,6 @@ describe("Hotel Service", () => {
   });
 
   test("getHotelById should return one hotel by ID", async () => {
-    // Simulate select().from().leftJoin().where()
     (db.select as jest.Mock).mockReturnValueOnce({
       from: jest.fn(() => ({
         leftJoin: jest.fn(() => ({
@@ -130,7 +129,7 @@ describe("Negative tests", () => {
   test("createHotel should return empty array if nothing is inserted", async () => {
     (db.insert as jest.Mock).mockReturnValueOnce({
       values: jest.fn(() => ({
-        returning: jest.fn().mockReturnValue([]), // simulate empty insert
+        returning: jest.fn().mockReturnValue([]),
       })),
     });
 
@@ -153,7 +152,7 @@ describe("Negative tests", () => {
     (db.update as jest.Mock).mockReturnValueOnce({
       set: jest.fn(() => ({
         where: jest.fn(() => ({
-          returning: jest.fn().mockReturnValue([]), // simulate no match
+          returning: jest.fn().mockReturnValue([]), 
         })),
       })),
     });

@@ -148,7 +148,7 @@ describe("Negative tests", () => {
   test("createTicket should return undefined if no ticket was created", async () => {
     (db.insert as jest.Mock).mockReturnValueOnce({
       values: jest.fn(() => ({
-        returning: jest.fn().mockResolvedValue([]) // simulate failed insert
+        returning: jest.fn().mockResolvedValue([]) 
       }))
     });
 
@@ -160,7 +160,7 @@ describe("Negative tests", () => {
     (db.update as jest.Mock).mockReturnValueOnce({
       set: jest.fn(() => ({
         where: jest.fn(() => ({
-          returning: jest.fn().mockResolvedValue([]) // simulate no update
+          returning: jest.fn().mockResolvedValue([]) 
         }))
       }))
     });

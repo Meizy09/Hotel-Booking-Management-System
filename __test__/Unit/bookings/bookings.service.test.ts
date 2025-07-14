@@ -104,13 +104,13 @@ describe("Booking Service", () => {
       Room_id: 2,
       Check_in_date: "2025-07-10",
       Check_out_date: "2025-07-12",
-      Total_amount: 450.0, // number
+      Total_amount: 450.0, 
       Booking_status: "confirmed",
-      Created_at: "2025-07-10T08:00:00Z", // string
+      Created_at: "2025-07-10T08:00:00Z", 
       Updated_at: "2025-07-10T08:00:00Z"
     }
   ];
-  const result = await bookingsService.createBooking({} as any); // input can be mocked
+  const result = await bookingsService.createBooking({} as any); 
   expect(result).toEqual(expected);
 });
 
@@ -151,7 +151,7 @@ describe("Negative tests", () => {
   test("createBooking should return empty array if no booking created", async () => {
     (db.insert as jest.Mock).mockReturnValueOnce({
       values: jest.fn(() => ({
-        returning: jest.fn().mockResolvedValue([]), // simulate failure
+        returning: jest.fn().mockResolvedValue([]), 
       })),
     });
 

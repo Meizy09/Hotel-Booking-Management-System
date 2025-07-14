@@ -1,4 +1,4 @@
-// __tests__/auth.controller.test.ts
+
 import request from "supertest";
 import express, { Request, Response } from "express";
 import * as authController from "../../../src/Auth/auth.controller";

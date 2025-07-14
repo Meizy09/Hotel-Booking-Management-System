@@ -177,7 +177,6 @@ const mockJoinChain: MockJoinChain = {
   then: jest.fn()
 };
 
-// Now assign methods after mockJoinChain is initialized
 mockJoinChain.innerJoin.mockImplementation(() => mockJoinChain);
 mockJoinChain.where.mockImplementation(() => mockJoinChain);
 mockJoinChain.then.mockImplementation(

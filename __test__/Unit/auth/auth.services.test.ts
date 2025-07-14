@@ -1,29 +1,35 @@
-// __tests__/auth.services.test.ts
+
 import * as authServices from "../../../src/Auth/auth.services";
 import db from "../../../src/Drizzle/db";
 import { eq } from "drizzle-orm";
 import { users } from "../../../src/Drizzle/schema";
+
+
+const mockWhere = jest.fn().mockResolvedValue([{ user_id: 1, Email: "test@example.com", verificationCode: "1234" }]);
+const mockReturning = jest.fn().mockResolvedValue([{ user_id: 1, Email: "test@example.com" }]);
+const mockUpdateWhere = jest.fn().mockResolvedValue([{ user_id: 1, isVerified: true }]);
 
 jest.mock("../../../src/Drizzle/db", () => ({
   __esModule: true,
   default: {
     insert: jest.fn(() => ({
       values: jest.fn(() => ({
-        returning: jest.fn().mockResolvedValue([{ user_id: 1, Email: "test@example.com" }])
+        returning: mockReturning
       }))
     })),
     select: jest.fn(() => ({
       from: jest.fn(() => ({
-        where: jest.fn().mockResolvedValue([{ user_id: 1, Email: "test@example.com", verificationCode: "1234" }])
+        where: mockWhere
       }))
     })),
     update: jest.fn(() => ({
       set: jest.fn(() => ({
-        where: jest.fn().mockResolvedValue([{ user_id: 1, isVerified: true }])
+        where: mockUpdateWhere
       }))
     }))
   }
 }));
+
 
 describe("Auth Services", () => {
   afterEach(() => jest.clearAllMocks());
@@ -50,16 +56,18 @@ describe("Auth Services", () => {
   });
 
   test("createUserService should return undefined if nothing inserted", async () => {
-    (db.insert(undefined as any).values({}).returning as jest.Mock).mockResolvedValueOnce([]);
-    const result = await authServices.createUserService({} as any);
-    expect(result).toBeUndefined();
-  });
+  mockReturning.mockResolvedValueOnce([]); 
+  const result = await authServices.createUserService({} as any);
+  expect(result).toBeUndefined();
+});
+
 
   test("getUserByEmailService should return undefined if no match", async () => {
-    (db.select().from(users).where as jest.Mock).mockResolvedValueOnce([]);
-    const result = await authServices.getUserByEmailService("unknown@example.com");
-    expect(result).toBeUndefined();
-  });
+  mockWhere.mockResolvedValueOnce([]); 
+  const result = await authServices.getUserByEmailService("unknown@example.com");
+  expect(result).toBeUndefined();
+});
+
 
   test("userLoginService should return undefined if no match", async () => {
     (db.select().from(users).where as jest.Mock).mockResolvedValueOnce([]);
