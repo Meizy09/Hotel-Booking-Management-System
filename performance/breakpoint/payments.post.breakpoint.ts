@@ -15,16 +15,16 @@ export const options = {
     ],
     ext: {
         loadimpact: {
-            name: 'Bookings GET Breakpoint Test',
+            name: 'Payments POST Breakpoint Test',
         },
     },
 };
 
 export default function () {
-    const res = http.get(`${BASE_URL}/bookings`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
+    const res = http.post(`${BASE_URL}/payments`, {
+        // headers: {
+            // 'Content-Type': 'application/json',
+        // },
     });
 
     check(res, {

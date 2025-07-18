@@ -15,13 +15,13 @@ export const options = {
     ],
     ext: {
         loadimpact: {
-            name: 'Bookings GET Breakpoint Test',
+            name: 'Hotels GET Breakpoint Test',
         },
     },
 };
 
 export default function () {
-    const res = http.get(`${BASE_URL}/bookings`, {
+    const res = http.get(`${BASE_URL}/hotels`, {
         headers: {
             'Content-Type': 'application/json',
         },

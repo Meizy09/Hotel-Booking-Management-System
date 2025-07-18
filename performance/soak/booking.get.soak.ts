@@ -5,17 +5,13 @@ const BASE_URL = 'http://localhost:3000/api'; // Update if your API runs on a di
 
 export const options = {
     stages: [
-        { duration: '30s', target: 50 },    // ramp-up to 50 users
-        { duration: '30s', target: 100 },   // ramp-up to 100 users
-        { duration: '30s', target: 200 },   // ramp-up to 200 users
-        { duration: '30s', target: 400 },   // ramp-up to 400 users
-        { duration: '30s', target: 800 },   // ramp-up to 800 users
-        { duration: '30s', target: 1600 },  // ramp-up to 1600 users (keep increasing)
-        { duration: '30s', target: 0 },     // ramp-down to 0 users
+        { duration: '1m', target: 20 },   // ramp-up to 20 users over 2 minutes
+        { duration: '3m', target: 20 },  // stay at 20 users for 56 minutes (total 58m)
+        { duration: '40s', target: 0 },    // ramp-down to 0 users
     ],
     ext: {
         loadimpact: {
-            name: 'Bookings GET Breakpoint Test',
+            name: 'Booking GET Soak Test',
         },
     },
 };
@@ -24,6 +20,7 @@ export default function () {
     const res = http.get(`${BASE_URL}/bookings`, {
         headers: {
             'Content-Type': 'application/json',
+            // 'Authorization': `Bearer YOUR_VALID_TOKEN`,
         },
     });
 

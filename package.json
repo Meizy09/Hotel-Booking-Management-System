@@ -10,7 +10,22 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "generate": "drizzle-kit generate",
-    "migrate": "tsx src/drizzle/migrate.ts"
+    "migrate": "tsx src/drizzle/migrate.ts",
+    "breakpoint:booking": "k6 run performance/breakpoint/booking.get.breakpoint.ts",
+    "breakpoint:hotels": "k6 run performance/breakpoint/hotels.get.breakpoint.ts",
+    "breakpoint.payments": "k6 run performance/breakpoint/payments.post.breakpoint.ts",
+    "load:booking": "k6 run performance/load/booking.get.load.ts",
+    "load:hotels": "k6 run performance/load/hotels.get.load.ts",
+    "load:payments": "k6 run performance/load/payments.post.load.ts",
+    "soak:booking": "k6 run performance/soak/booking.get.soak.ts",
+    "soak:hotels": "k6 run performamnce/soak/hotels.get.soak.ts",
+    "soak:payments": "k6 run performance/soak/payments.post.soak.ts",
+    "spike:booking": "k6 run performance/spike/booking.get.spike.ts",
+    "spike:hotels": "k6 run performance/spike/hotels.get.spike.ts",
+    "spike:payments": "k6 run performance/spike/payments.post.spike.ts",
+    "stress:booking": "k6 run performance/stress/booking.get.stress.ts",
+    "stress:hotels": "k6 run performance/stress/hotels.get.stress.ts",
+    "stress:payments": "k6 run performance/stress/payments.post.stress.ts"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +49,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/k6": "^1.1.1",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.0.1",
     "drizzle-orm": "^0.44.2",

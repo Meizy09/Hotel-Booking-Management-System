@@ -53,8 +53,10 @@ export const createPayment = async (req: Request, res: Response) => {
     const newPayment = await paymentService.createPayment(req.body);
     res.status(201).json(newPayment);
   } catch (error) {
-    res.status(500).json({ message: "Error creating payment", error });
-  }
+  console.error("Error creating payment:", error); // <-- LOG THE ACTUAL ERROR
+  res.status(500).json({ message: "Error creating payment", error });
+}
+
 };
 
 
